@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="18122" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="FrC-jJ-lGF">
-    <device id="ipad10_2" orientation="portrait" layout="fullscreen" appearance="light"/>
+    <device id="ipad10_2" orientation="landscape" layout="fullscreen" appearance="light"/>
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="18093"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
@@ -12,7 +12,7 @@
         <!--Split View Controller-->
         <scene sceneID="5Oa-RH-ULj">
             <objects>
-                <splitViewController allowDoubleColumnStyle="YES" id="FrC-jJ-lGF" sceneMemberID="viewController">
+                <splitViewController allowDoubleColumnStyle="YES" preferredDisplayMode="beside" behavior="tile" id="FrC-jJ-lGF" sceneMemberID="viewController">
                     <connections>
                         <segue destination="0fB-4H-GDN" kind="relationship" relationship="detailViewController" id="c62-dc-7TW"/>
                         <segue destination="b10-aK-Euu" kind="relationship" relationship="masterViewController" id="IcH-DV-LOf"/>
@@ -27,11 +27,11 @@
             <objects>
                 <viewController id="b10-aK-Euu" customClass="GalleryListViewController" customModule="ImageGallery" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="9Ud-Q1-gjT">
-                        <rect key="frame" x="0.0" y="0.0" width="420" height="1080"/>
+                        <rect key="frame" x="0.0" y="0.0" width="420" height="810"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="HQZ-Af-fQb">
-                                <rect key="frame" x="100" y="50" width="320" height="1030"/>
+                                <rect key="frame" x="100" y="50" width="320" height="760"/>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                 <prototypes>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="GalleryListCell" textLabel="F4z-dF-Rl2" style="IBUITableViewCellStyleDefault" id="BbI-St-sup">
@@ -50,9 +50,6 @@
                                                 </label>
                                             </subviews>
                                         </tableViewCellContentView>
-                                        <connections>
-                                            <segue destination="Grn-RO-IDg" kind="showDetail" identifier="ShowImageCollection" id="szl-5h-3qS"/>
-                                        </connections>
                                     </tableViewCell>
                                 </prototypes>
                             </tableView>
@@ -79,11 +76,11 @@
             <objects>
                 <viewController id="Grn-RO-IDg" customClass="ImageGalleryViewController" customModule="ImageGallery" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="DZK-v7-Vwz">
-                        <rect key="frame" x="0.0" y="0.0" width="810" height="1080"/>
+                        <rect key="frame" x="0.0" y="0.0" width="759.5" height="810"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="ylr-GQ-6wl">
-                                <rect key="frame" x="0.0" y="50" width="810" height="1030"/>
+                                <rect key="frame" x="0.0" y="50" width="759.5" height="760"/>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                 <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="r51-hP-koV">
                                     <size key="itemSize" width="128" height="128"/>
@@ -128,7 +125,7 @@
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="0fB-4H-GDN" sceneMemberID="viewController">
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="4SD-45-VV1">
-                        <rect key="frame" x="0.0" y="0.0" width="810" height="50"/>
+                        <rect key="frame" x="0.0" y="0.0" width="759.5" height="50"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
                     <nil name="viewControllers"/>
@@ -141,9 +138,6 @@
             <point key="canvasLocation" x="67.407407407407405" y="-581.11111111111109"/>
         </scene>
     </scenes>
-    <inferredMetricsTieBreakers>
-        <segue reference="szl-5h-3qS"/>
-    </inferredMetricsTieBreakers>
     <resources>
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>

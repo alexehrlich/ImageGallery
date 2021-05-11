@@ -20,15 +20,6 @@ class GalleryListViewController: UIViewController {
     
     var selectedGallery: String?
     
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        
-        if segue.identifier == "ShowImageCollection" {
-            if let destVC = segue.destination as? ImageGalleryViewController, let gallery = selectedGallery{
-                destVC.imageURLs = ImageGalleryModel.imageURLs[gallery]!
-            }
-        }
-    }
-
 }
 
 //MARK: TableView DataSource and Delegate
@@ -38,6 +29,7 @@ extension GalleryListViewController: UITableViewDelegate, UITableViewDataSource{
     func numberOfSections(in tableView: UITableView) -> Int {
         return 2
     }
+    
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         
         switch section{
@@ -59,7 +51,7 @@ extension GalleryListViewController: UITableViewDelegate, UITableViewDataSource{
         if indexPath.section == 0{
             let keys = Array(ImageGalleryModel.imageURLs.keys).sorted()
             cell.textLabel?.text = keys[indexPath.row]
-        }else if indexPath.row == 1 {
+        }else if indexPath.section == 1 {
             let keys = Array(ImageGalleryModel.recentlyDeletedGallery.keys).sorted()
             cell.textLabel?.text = keys[indexPath.row]
         }
@@ -75,10 +67,57 @@ extension GalleryListViewController: UITableViewDelegate, UITableViewDataSource{
         }else{
             selectedGallery = nil
         }
-        
-        performSegue(withIdentifier: "ShowImageCollection", sender: self)
-        
+      
+        if let detailVC = splitViewController?.viewControllers[1] as? UINavigationController{
+            
+            if let imageGalleryVC = detailVC.viewControllers.first as? ImageGalleryViewController{
+                
+                if let gallery = selectedGallery{
+                    imageGalleryVC.title = gallery
+                    imageGalleryVC.imageDataTuple = ImageGalleryModel.imageURLs[gallery] ?? []
+                    imageGalleryVC.imageCollectionView.reloadData()
+                }else{
+                    detailVC.title = "Gallery"
+                }
+            }
+        }
     }
     
+    func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
+        
+        switch editingStyle{
+        
+        case .delete:
+            
+            if indexPath.section == 0{
+                let key = ImageGalleryModel.imageURLs.keys.sorted()[indexPath.row]
+                let removedItem = ImageGalleryModel.imageURLs.removeValue(forKey: key)
+                ImageGalleryModel.recentlyDeletedGallery[key] = removedItem
+            }else{
+                let key = ImageGalleryModel.recentlyDeletedGallery.keys.sorted()[indexPath.row]
+                ImageGalleryModel.recentlyDeletedGallery.removeValue(forKey: key)
+            }
+            
+            galleryListTableView.reloadData()
+            
+        default: break
+            
+        }
+    }
     
+    func tableView(_ tableView: UITableView, leadingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
+        
+        let actions = UIContextualAction(style: .normal, title: "restore") { (action, view, closure) in
+            
+            let key = ImageGalleryModel.recentlyDeletedGallery.keys.sorted()[indexPath.row]
+            let removedItem = ImageGalleryModel.recentlyDeletedGallery.removeValue(forKey: key)
+            ImageGalleryModel.recentlyDeletedGallery.removeValue(forKey: key)
+            ImageGalleryModel.imageURLs[key] = removedItem
+            
+            self.galleryListTableView.reloadData()
+        }
+        
+        return UISwipeActionsConfiguration(actions: [actions])
+    }
 }
+
