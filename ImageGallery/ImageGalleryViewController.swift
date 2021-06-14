@@ -144,14 +144,14 @@ extension ImageGalleryViewController: UICollectionViewDropDelegate{
     
 
     //1. Can the dropDelegate handle the object?
-    func dropInteraction(_ interaction: UIDropInteraction, canHandle session: UIDropSession) -> Bool {
-        
+    func collectionView(_ collectionView: UICollectionView, canHandle session: UIDropSession) -> Bool {
         //requirement: only drop with image and url should be handled
         return session.canLoadObjects(ofClass: NSURL.self)
     }
+
     
     //2. update the session. Return a propsal in which manner the object schould be dropped (.copy; .move...)
-    func dropInteraction(_ interaction: UIDropInteraction, sessionDidUpdate session: UIDropSession) -> UIDropProposal {
+    func collectionView(_ collectionView: UICollectionView, dropSessionDidUpdate session: UIDropSession, withDestinationIndexPath destinationIndexPath: IndexPath?) -> UICollectionViewDropProposal {
         
         //Es wird überprüft, ob der collectionView auf dem gedroppt werden soll der ist, von dem das DragItem stammt
         let isSelf = (session.localDragSession?.localContext as? UICollectionView) == imageCollectionView
@@ -240,11 +240,11 @@ extension ImageGalleryViewController: UICollectionViewDragDelegate{
     
     private func dragItem(at indexPath: IndexPath) -> [UIDragItem]{
         
-        if let image = (imageCollectionView.cellForItem(at: indexPath) as? ImageCollectionViewCell)?.imageView.image{
+        if let nsURL = (imageCollectionView.cellForItem(at: indexPath) as? ImageCollectionViewCell)?.imageUrl{
             
-            let dragItem = UIDragItem(itemProvider: NSItemProvider(object: image))
+            let dragItem = UIDragItem(itemProvider: NSItemProvider(object: nsURL))
             
-            dragItem.localObject = image
+            dragItem.localObject = nsURL
             
             return [dragItem]
         }
